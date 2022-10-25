@@ -4,7 +4,7 @@
 SERVER_ADDR="192.192.3.2"
 DOMAIN_NAME="wise.d14.com"
 FORWARD_FILE="wise.d14.com"
-REVERSE_FILE="${RESOLV_ADDR}"
+REVERSE_FILE="$RESOLV_ADDR"
 RESOLV_ADDR="3.192.192"
 
 again='y'
@@ -74,14 +74,14 @@ EOF
     cat /etc/bind/named.conf.local
 
     echo "Create new forward and reverse file"
-    cd /etc/bind && mkdir wise.d14.com
+    cd /etc/bind && mkdir wise
     cp db.local wise/${FORWARD_FILE}
-    sudo cp db.127 wise/${REVERSE_FILE}
+    cp db.127 wise/${REVERSE_FILE}
     echo "Done..."
     fi
     ;;
 
-5)  if [ -z "$(ls -A /etc/bind/${FORWARD_FILE})" ]; then
+5)  if [ -z "$(ls -A /etc/bind/wise/${FORWARD_FILE})" ]; then
     echo "File not found!!"
     else
     cd /etc/bind
@@ -94,7 +94,7 @@ EOF
 www     IN      A       $SERVER_ADDR
 
 EOF
-    cat /etc/bind/${FORWARD_FILE}
+    cat /etc/bind/wise/${FORWARD_FILE}
     echo "Done..."
     fi
     ;;

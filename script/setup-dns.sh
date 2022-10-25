@@ -86,11 +86,11 @@ EOF
     else
     cd /etc/bind
     echo "Replace all localhost string with domain name..."
-    sudo sed -i "s/localhost/${DOMAIN_NAME}/gI" ${FORWARD_FILE}
+    sed -i "s/localhost/${DOMAIN_NAME}/gI" ${FORWARD_FILE}
     echo "Replace 127.0.0.1 with server address..."
-    sudo sed -i "s/127.0.0.1/${SERVER_ADDR}/gI" ${FORWARD_FILE}
+    sed -i "s/127.0.0.1/${SERVER_ADDR}/gI" ${FORWARD_FILE}
     echo "Adding new record..."
-    sudo cat >> /etc/bind/${FORWARD_FILE} <<- EOF
+    cat >> /etc/bind/${FORWARD_FILE} <<- EOF
 www     IN      A       $SERVER_ADDR
 
 EOF

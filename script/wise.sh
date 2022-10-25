@@ -78,7 +78,7 @@ EOF
     echo "Create new forward and reverse file"
     cd /etc/bind && mkdir wise
     cp db.local wise/${FORWARD_FILE}
-    cp db.127 wise/${REVERSE_FILE}
+    cp db.local wise/${REVERSE_FILE}
     echo "Done..."
     fi
     ;;
@@ -93,7 +93,10 @@ EOF
     sed -i "s/127.0.0.1/${SERVER_ADDR}/gI" ${FORWARD_FILE}
     echo "Adding new record..."
     cat >> /etc/bind/${FORWARD_FILE} <<- EOF
-www     IN      A       $SERVER_ADDR
+www     IN      CNAME       $SERVER_ADDR
+eden     IN      A       $SERVER_ADDR
+www.eden IN     CNAME   $DOMAIN_NAME.
+
 EOF
     cat /etc/bind/wise/${FORWARD_FILE}
     echo "Done..."

@@ -80,7 +80,7 @@ EOF
     echo "Create new forward and reverse file"
     cd /etc/bind && mkdir berlint
     cp db.local berlint/${FORWARD_FILE}
-    cp db.127 berlint/${REVERSE_FILE}
+    #cp db.127 berlint/${REVERSE_FILE}
     echo "Done..."
     fi
     ;;

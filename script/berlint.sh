@@ -67,55 +67,55 @@ case $choice in
 
 zone "${DOMAIN_NAME}" {
         type slave;
-        masters {192.192.3.2};
+        masters { 192.192.3.2; };
         file "/var/lib/bind/${FORWARD_FILE}";
 };
 zone "${SLAVE_DOMAIN}.in-addr.arpa" {
         type master;
-        file "/etc/bind/eden/${FORWARD_FILE}";
+        file "/etc/bind/berlint/${FORWARD_FILE}";
 };
 EOF
     cat /etc/bind/named.conf
 
     echo "Create new forward and reverse file"
-    cd /etc/bind && mkdir eden
-    cp db.local eden/${FORWARD_FILE}
-    cp db.127 eden/${REVERSE_FILE}
+    cd /etc/bind && mkdir berlint
+    cp db.local berlint/${FORWARD_FILE}
+    cp db.127 berlint/${REVERSE_FILE}
     echo "Done..."
     fi
     ;;
 
-5)  if [ -z "$(ls -A /etc/bind/wise/${FORWARD_FILE})" ]; then
+5)  if [ -z "$(ls -A /etc/bind/eden/${FORWARD_FILE})" ]; then
     echo "File not found!!"
     else
-    cd /etc/bind/eden
+    cd /etc/bind/berlint
     echo "Replace all localhost string with domain name..."
     sed -i "s/localhost/${DOMAIN_NAME}/gI" ${FORWARD_FILE}
     echo "Replace 127.0.0.1 with server address..."
     sed -i "s/127.0.0.1/${SERVER_ADDR}/gI" ${FORWARD_FILE}
     echo "Adding new record..."
-    cat >> /etc/bind/${FORWARD_FILE} <<- EOF
+    cat >> /etc/bind/berlint/${FORWARD_FILE} <<- EOF
 www     IN      A       $SERVER_ADDR
 EOF
-    cat /etc/bind/eden/${FORWARD_FILE}
+    cat /etc/bind/berlint/${FORWARD_FILE}
     service bind9 restart
     echo "Done..."
     fi
     ;;
 
-6)  if [ -z "$(ls -A /etc/bind/wise/${REVERSE_FILE})" ]; then
+6)  if [ -z "$(ls -A /etc/bind/eden/${REVERSE_FILE})" ]; then
     echo "File not found!!"
     else
-    cd /etc/bind/eden
+    cd /etc/bind/berlint
     echo "Replace all localhost string with domain name..."
     sed -i "s/localhost/${DOMAIN_NAME}/gI" ${REVERSE_FILE}
     echo "Adding new record..."
-    cat >> /etc/bind/${REVERSE_FILE} <<- EOF
+    cat >> /etc/bind/berlint/${REVERSE_FILE} <<- EOF
 3        IN        NS         $DOMAIN_NAME.
 3      IN       PTR         www.$DOMAIN_NAME.
 
 EOF
-    cat /etc/bind/${REVERSE_FILE}
+    cat /etc/bind/berlint/${REVERSE_FILE}
     service bind9 restart
     echo "Configurations is succes..."
     fi
@@ -126,7 +126,7 @@ EOF
     else
     echo "Configure..."
     # sudo su
-    cat >> /etc/bind/named.conf <<- EOF
+    cat >> /etc/bind/named.conf.options <<- EOF
 
 options {
         directory "/var/cache/bind";

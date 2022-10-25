@@ -1,12 +1,12 @@
 #!/bin/bash
 
 #CONSTANT
-SERVER_ADDR="192.192.3.2"
+SERVER_ADDR="192.192.2.3"
 DOMAIN_NAME="wise.D14.com"
 SLAVE_DOMAIN="eden.wise.D14.com"
 FORWARD_FILE="forward"
 REVERSE_FILE="reverse"
-RESOLV_ADDR="3.192.192"
+RESOLV_ADDR="2.192.192"
 
 again='y'
 while [[ $again == 'Y' ]] || [[ $again == 'y' ]];
@@ -25,7 +25,7 @@ echo " 9. Remove bind9                                                 ";
 echo " 0. Exit                                                         ";
 echo "=================================================================";
 
-read -p " Enter Your Choice [0 - 8] : " choice;
+read -p " Enter Your Choice [0 - 9] : " choice;
 echo "";
 case $choice in
 
@@ -111,8 +111,8 @@ EOF
     sed -i "s/localhost/${DOMAIN_NAME}/gI" ${REVERSE_FILE}
     echo "Adding new record..."
     cat >> /etc/bind/${REVERSE_FILE} <<- EOF
-@        IN        NS         $DOMAIN_NAME.
-2      IN       PTR         www.$DOMAIN_NAME.
+3        IN        NS         $DOMAIN_NAME.
+3      IN       PTR         www.$DOMAIN_NAME.
 
 EOF
     cat /etc/bind/${REVERSE_FILE}
@@ -146,7 +146,7 @@ EOF
     ;;
 
 
-7)  read -p "You want set up resolv.conf? y/n : " -n 1 -r
+8)  read -p "You want set up resolv.conf? y/n : " -n 1 -r
     echo ""
     if [[ ! $REPLY =~ ^[Nn]$ ]]
     then 
@@ -159,7 +159,7 @@ EOF
     fi
     ;;
 
-8)  read -p "You want  to remove bind9 and all config files? y/n :" -n 1 -r
+9)  read -p "You want  to remove bind9 and all config files? y/n :" -n 1 -r
     echo ""
     if [[ ! $REPLY =~ ^[Nn]$ ]]
     then 

@@ -57,12 +57,12 @@ case $choice in
     fi
     ;;
 
-4)  if [ -z "$(ls -A /etc/bind/named.conf)" ]; then
+4)  if [ -z "$(ls -A /etc/bind/named.conf.local)" ]; then
     echo "Bind9 is not installed before, Please install it!"
     else
     echo "Created forward zone and reverse zone"
     # sudo su
-    cat >> /etc/bind/named.conf <<- EOF
+    cat >> /etc/bind/named.conf.local <<- EOF
 
 zone "${DOMAIN_NAME}" {
         type master;
@@ -73,7 +73,7 @@ zone "${RESOLV_ADDR}.in-addr.arpa" {
         file "/etc/bind/wise/${REVERSE_FILE}";
 };
 EOF
-    cat /etc/bind/named.conf
+    cat /etc/bind/named.conf.local
 
     echo "Create new forward and reverse file"
     cd /etc/bind && mkdir wise

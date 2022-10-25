@@ -58,12 +58,12 @@ case $choice in
     fi
     ;;
 
-4)  if [ -z "$(ls -A /etc/bind/named.conf)" ]; then
+4)  if [ -z "$(ls -A /etc/bind/named.conf.local)" ]; then
     echo "Bind9 is not installed before, Please install it!"
     else
     echo "Created forward zone and reverse zone"
     # sudo su
-    cat >> /etc/bind/named.conf <<- EOF
+    cat >> /etc/bind/named.conf.local <<- EOF
 
 zone "${DOMAIN_NAME}" {
         type slave;
@@ -75,7 +75,7 @@ zone "${SLAVE_DOMAIN}.in-addr.arpa" {
         file "/etc/bind/berlint/${FORWARD_FILE}";
 };
 EOF
-    cat /etc/bind/named.conf
+    cat /etc/bind/named.conf.local
 
     echo "Create new forward and reverse file"
     cd /etc/bind && mkdir berlint
@@ -85,7 +85,7 @@ EOF
     fi
     ;;
 
-5)  if [ -z "$(ls -A /etc/bind/eden/${FORWARD_FILE})" ]; then
+5)  if [ -z "$(ls -A /etc/bind/berlint/${FORWARD_FILE})" ]; then
     echo "File not found!!"
     else
     cd /etc/bind/berlint
@@ -103,7 +103,7 @@ EOF
     fi
     ;;
 
-6)  if [ -z "$(ls -A /etc/bind/eden/${REVERSE_FILE})" ]; then
+6)  if [ -z "$(ls -A /etc/bind/berlint/${REVERSE_FILE})" ]; then
     echo "File not found!!"
     else
     cd /etc/bind/berlint
@@ -126,7 +126,7 @@ EOF
     else
     echo "Configure..."
     # sudo su
-    cat >> /etc/bind/named.conf.options <<- EOF
+    cat > /etc/bind/named.conf.options <<- EOF
 
 options {
         directory "/var/cache/bind";

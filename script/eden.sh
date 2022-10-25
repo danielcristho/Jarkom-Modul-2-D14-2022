@@ -72,15 +72,15 @@ zone "${DOMAIN_NAME}" {
 };
 zone "${SLAVE_DOMAIN}.in-addr.arpa" {
         type master;
-        file "/etc/bind/wise/${FORWARD_FILE}";
+        file "/etc/bind/eden/${FORWARD_FILE}";
 };
 EOF
     cat /etc/bind/named.conf
 
     echo "Create new forward and reverse file"
-    cd /etc/bind && mkdir wise
-    cp db.local wise/${FORWARD_FILE}
-    cp db.127 wise/${REVERSE_FILE}
+    cd /etc/bind && mkdir eden
+    cp db.local eden/${FORWARD_FILE}
+    cp db.127 eden/${REVERSE_FILE}
     echo "Done..."
     fi
     ;;
@@ -88,7 +88,7 @@ EOF
 5)  if [ -z "$(ls -A /etc/bind/wise/${FORWARD_FILE})" ]; then
     echo "File not found!!"
     else
-    cd /etc/bind/wise
+    cd /etc/bind/eden
     echo "Replace all localhost string with domain name..."
     sed -i "s/localhost/${DOMAIN_NAME}/gI" ${FORWARD_FILE}
     echo "Replace 127.0.0.1 with server address..."
@@ -97,7 +97,7 @@ EOF
     cat >> /etc/bind/${FORWARD_FILE} <<- EOF
 www     IN      A       $SERVER_ADDR
 EOF
-    cat /etc/bind/wise/${FORWARD_FILE}
+    cat /etc/bind/eden/${FORWARD_FILE}
     service bind9 restart
     echo "Done..."
     fi
@@ -106,7 +106,7 @@ EOF
 6)  if [ -z "$(ls -A /etc/bind/wise/${REVERSE_FILE})" ]; then
     echo "File not found!!"
     else
-    cd /etc/bind/wise
+    cd /etc/bind/eden
     echo "Replace all localhost string with domain name..."
     sed -i "s/localhost/${DOMAIN_NAME}/gI" ${REVERSE_FILE}
     echo "Adding new record..."

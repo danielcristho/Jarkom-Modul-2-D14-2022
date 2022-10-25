@@ -2,7 +2,8 @@
 
 #CONSTANT
 SERVER_ADDR="192.192.3.2"
-DOMAIN_NAME="wise.d14.com"
+DOMAIN_NAME="wise.D14.com"
+SLAVE_DOMAIN="eden.wise.D14.com"
 FORWARD_FILE="forward"
 REVERSE_FILE="reverse"
 RESOLV_ADDR="3.192.192"
@@ -18,8 +19,9 @@ echo " 3. Install bind9                                                ";
 echo " 4. Create new zone (forward zone&reverse zone)                  ";
 echo " 5. Configure forward zone                                       ";
 echo " 6. Configure reverse zone                                       ";
-echo " 7. Configure resolv.conf                                        ";
-echo " 8. Remove bind9                                                 ";
+echo " 7. Configure named.conf.options                                 ";
+echo " 8. Configure resolv.conf                                        ";
+echo " 9. Remove bind9                                                 ";
 echo " 0. Exit                                                         ";
 echo "=================================================================";
 
@@ -64,12 +66,13 @@ case $choice in
     cat >> /etc/bind/named.conf <<- EOF
 
 zone "${DOMAIN_NAME}" {
+        type slave;
+        masters {192.192.3.2};
+        file "/var/lib/bind/${FORWARD_FILE}";
+};
+zone "${SLAVE_DOMAIN}.in-addr.arpa" {
         type master;
         file "/etc/bind/wise/${FORWARD_FILE}";
-};
-zone "${RESOLV_ADDR}.in-addr.arpa" {
-        type master;
-        file "/etc/bind/wise/${REVERSE_FILE}";
 };
 EOF
     cat /etc/bind/named.conf
@@ -95,6 +98,7 @@ EOF
 www     IN      A       $SERVER_ADDR
 EOF
     cat /etc/bind/wise/${FORWARD_FILE}
+    service bind9 restart
     echo "Done..."
     fi
     ;;
@@ -108,7 +112,7 @@ EOF
     echo "Adding new record..."
     cat >> /etc/bind/${REVERSE_FILE} <<- EOF
 @        IN        NS         $DOMAIN_NAME.
-10      IN       PTR         www.$DOMAIN_NAME.
+2      IN       PTR         www.$DOMAIN_NAME.
 
 EOF
     cat /etc/bind/${REVERSE_FILE}
@@ -117,13 +121,39 @@ EOF
     fi
     ;;
 
+7)  if [ -z "$(ls -A /etc/bind/named.conf.options)" ]; then
+    echo "File not found"
+    else
+    echo "Configure..."
+    # sudo su
+    cat >> /etc/bind/named.conf <<- EOF
+
+options {
+        directory "/var/cache/bind";
+        // forwarders {
+        //      0.0.0.0;
+        // };
+        // dnssec-validation auto;
+        allow-query{any;};
+        auth-nxdomain no;    # conform to RFC1035
+        listen-on-v6 { any; };
+};
+EOF
+    cat /etc/bind/named.conf.options
+    service bind9 restart
+    echo "Done..."
+    fi
+    ;;
+
+
 7)  read -p "You want set up resolv.conf? y/n : " -n 1 -r
     echo ""
     if [[ ! $REPLY =~ ^[Nn]$ ]]
     then 
     echo "Edit resolv.conf"
-    # sudo su
-    echo "nameserver ${SERVER_ADDR}" >> /etc/resolv.conf
+    echo "nameserver ${SERVER_ADDR}" > /etc/resolv.conf
+    #Comment IP Nat
+    echo "#nameserver 192.168.122.1" >> /etc/resolv.conf
     echo "DONE..."
     echo "Try using nslookup..."
     fi

@@ -62,6 +62,7 @@ case $choice in
     echo "Created forward zone and reverse zone"
     # sudo su
     cat >> /etc/bind/named.conf <<- EOF
+
 zone "${DOMAIN_NAME}" {
         type master;
         file "/etc/bind/wise/${FORWARD_FILE}";
@@ -98,20 +99,20 @@ EOF
     fi
     ;;
 
-6)  if [ -z "$(ls -A /etc/bind/${REVERSE_FILE})" ]; then
+6)  if [ -z "$(ls -A /etc/bind/wise/${REVERSE_FILE})" ]; then
     echo "File not found!!"
     else
-    cd /etc/bind
+    cd /etc/bind/wise
     echo "Replace all localhost string with domain name..."
-    sudo sed -i "s/localhost/${DOMAIN_NAME}/gI" ${FORWARD_FILE}
+    sed -i "s/localhost/${DOMAIN_NAME}/gI" ${REVERSE_FILE}
     echo "Adding new record..."
-    sudo cat >> /etc/bind/${REVERSE_FILE} <<- EOF
+    cat >> /etc/bind/${REVERSE_FILE} <<- EOF
 @        IN        NS         $DOMAIN_NAME.
 10      IN       PTR         www.$DOMAIN_NAME.
 
 EOF
     cat /etc/bind/${REVERSE_FILE}
-    sudo service bind9 restart
+    service bind9 restart
     echo "Configurations is succes..."
     fi
     ;;
@@ -132,8 +133,8 @@ EOF
     echo ""
     if [[ ! $REPLY =~ ^[Nn]$ ]]
     then 
-    sudo apt-get remove bind9 -y
-    sudo apt-get remove --auto-remove bind9 -y
+    apt-get remove bind9 -y
+    apt-get remove --auto-remove bind9 -y
     echo "Bind9 is already remove"
     fi
     ;;

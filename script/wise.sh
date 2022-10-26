@@ -126,7 +126,7 @@ EOF
     else
     echo "Configure..."
     # sudo su
-    cat >> /etc/bind/named.conf <<- EOF
+    cat > /etc/bind/named.conf <<- EOF
 
 options {
         directory "/var/cache/bind";

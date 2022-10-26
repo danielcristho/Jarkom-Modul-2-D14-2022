@@ -319,4 +319,4 @@ lynx wise.D14.com/index.php/home
 ```
 
 ## Catatan
-- Untuk memudahkan pengerjaan saya mengubah IP eth0 menjadi static agar IP nya tidak berubah ketika ingin diakses kembali.
+- Untuk memudahkan pengerjaan, saya mengubah IP eth0 menjadi static agar IP nya tidak berubah ketika ingin diakses kembali melalui ssh dari host komputer.

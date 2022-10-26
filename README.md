@@ -267,6 +267,56 @@ zone "operation.wise.D14.com.in-addr.arpa" {
         file "/etc/bind/operation/forward";
 };
 ```
+### Nomor 7
+Untuk informasi yang lebih spesifik mengenai Operation Strix, buatlah subdomain melalui Berlint dengan akses strix.operation.wise.yyy.com dengan alias www.strix.operation.wise.yyy.com yang mengarah ke Eden
+
+* Tambahkan konfigurasi pada **/etc/bind/operation** di Berlint
+
+```
+strix           IN      A       192.199.2.3
+www.strix       IN      A       192.199.2.3
+```
+
+### Nomor 8
+Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver www.wise.yyy.com. Pertama, Loid membutuhkan webserver dengan DocumentRoot pada /var/www/wise.yyy.com
+
+* Clone resources
+
+```
+git clone https://github.com/danielcristho/Jarkom-Modul-2-D14-2022.git
+```
+
+* Copy beberapa resources ke directory **/var/www/**
+
+```
+cp wise /var/www/wise.D14.com -r
+cp eden.wise /var/www/eden.wise.D14.com -r
+cp wise /var/www/strix.operation.wise.D14.com -r
+```
+* Konfigurasi Apache pada direktori **/etc/apache2/sites-available/000-default.conf** di Eden.
+
+```
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/wise.D14.com
+        ServerName www.wise.D14.com
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+
+### Nomor 9
+Setelah itu, Loid juga membutuhkan agar url www.wise.yyy.com/index.php/home dapat menjadi menjadi www.wise.yyy.com/home
+
+* Tambahkan alias
+```
+   Alias "/home" "/var/www/wise.D14.com/index.php/home"
+```
+
+* Testing
+```
+lynx wise.D14.com/index.php/home
+```
 
 ## Catatan
 - Untuk memudahkan pengerjaan saya mengubah IP eth0 menjadi static agar IP nya tidak berubah ketika ingin diakses kembali.

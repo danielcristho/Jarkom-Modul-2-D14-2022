@@ -200,10 +200,10 @@ $TTL    604800
 ### Nomor 5
 Agar dapat tetap dihubungi jika server WISE bermasalah, buatlah juga Berlint sebagai DNS Slave untuk domain utama
 
-** Tambahkan konfigurasi sebagai master pada ***/etc/bind/named.conf.local** di WISE
+* Tambahkan konfigurasi sebagai master pada **/etc/bind/named.conf.local** di WISE
 
 ```
-zone "wise.d14.com" {
+zone "wise.D14.com" {
         type master;
         notify yes;
         allow-transfer { 192.192.2.2; }; //IP Berlint
@@ -211,7 +211,7 @@ zone "wise.d14.com" {
         file "/etc/bind/wise/forward";
 ```
 
-** Kemudain tambahkan konfigurasi sebagai slave pada ***/etc/bind/named.conf.local** di Berlint
+* Kemudian tambahkan konfigurasi sebagai slave pada **/etc/bind/named.conf.local** di Berlint
 
 ```
 zone "wise.D14.com" {
@@ -267,3 +267,6 @@ zone "operation.wise.D14.com.in-addr.arpa" {
         file "/etc/bind/operation/forward";
 };
 ```
+
+## Catatan
+- Untuk memudahkan pengerjaan saya mengubah IP eth0 menjadi static agar IP nya tidak berubah ketika ingin diakses kembali.

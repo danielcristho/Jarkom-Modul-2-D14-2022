@@ -11,11 +11,11 @@ read -p " Enter Your Choice [0 - 1] : " choice;
 echo "";
 case $choice in
 
-1)  if [ -z "$(ls -A /var/www/wise.D14.com)" ]; then
+1)  if [ -z "$(ls -A /etc/apache2/sites-available/000-default.conf)" ]; then
         echo "File not found"
         else
         echo "Configure..."
-        cat > /var/www/wise.D14.com <<- EOF
+        cat > /etc/apache2/sites-available/000-default.conf <<- EOF
 
 <VirtualHost *:80>
 
@@ -33,7 +33,7 @@ case $choice in
 </VirtualHost>
 EOF
 
-        cat /etc/bind/named.conf.options
+        cat /etc/apache2/sites-available/000-default.conf
         service apache2 restart
         echo "Done..."
         fi

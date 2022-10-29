@@ -293,7 +293,7 @@ cp wise /var/www/wise.D14.com -r
 cp eden.wise /var/www/eden.wise.D14.com -r
 cp wise /var/www/strix.operation.wise.D14.com -r
 ```
-* Konfigurasi Apache pada direktori **/etc/apache2/sites-available/000-default.conf** di Eden.
+* Konfigurasi Apache pada direktori **/etc/apache2/sites-available/wise.D14.com.conf** di Eden.
 
 ```
 <VirtualHost *:80>
@@ -312,11 +312,179 @@ Setelah itu, Loid juga membutuhkan agar url www.wise.yyy.com/index.php/home dapa
 ```
    Alias "/home" "/var/www/wise.D14.com/index.php/home"
 ```
+* Reload
+
+```
+a2ensite wise.D14.com
+service apache2 reload
+```
 
 * Testing
 ```
 lynx wise.D14.com/index.php/home
 ```
 
+### Nomor 10
+Setelah itu, pada subdomain www.eden.wise.yyy.com, Loid membutuhkan penyimpanan aset yang memiliki DocumentRoot pada /var/www/eden.wise.yyy.com.
+
+* Buat konfigurasi baru lagi di **/etc/apache2/sites-available** dengan nama eden.wise.D14.com.conf
+
+```
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/eden.wise.D14.com
+        ServerName www.eden.wise.D14.com
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+
+### Nomor 11
+Akan tetapi, pada folder /public, Loid ingin hanya dapat melakukan directory listing saja
+
+* Kemudian tambahkan konfigurasi untuk "directory listing" di **/etc/apache2/sites-available/eden.wise.D14.com.conf**
+
+```
+        <Directory /var/www/eden.wise.D14.com/public>
+                Options +Indexes
+        </Directory>
+        <Directory /var/www/eden.wise.D14.com/public/css/*>
+                Options -Indexes
+        </Directory>
+        <Directory /var/www/eden.wise.D14.com/public/js/*>
+                Options -Indexes
+        </Directory>
+        <Directory /var/www/eden.wise.D14.com>
+                Options +FollowSymLinks -Multiviews
+                AllowOverride All
+        </Directory>
+```
+
+* Testing
+
+```
+lynx eden.wise.D14.com
+```
+
+### Nomor 12
+Tidak hanya itu, Loid juga ingin menyiapkan error file 404.html pada folder /error untuk mengganti error kode pada apache
+
+* Tambahkan konfigurasi ini di **/etc/apache2/sites-available/eden.wise.D14.com.conf** untuk redirect 404
+
+```
+<Directory /var/www/eden.wise.D14.com>
+                Options +FollowSymLinks -Multiviews
+                AllowOverride All
+</Directory>
+```
+* Kemudian buat file ".htaccess" di direktori **/var/www/eden.wise.D14.com** lalu tambahkan:
+```
+ErrorDocument 404 /error/404.html
+```
+
+* Testing
+
+```
+lynx eden.wise.D14.com/testing
+```
+
+### Nomor 13
+Loid juga meminta Franky untuk dibuatkan konfigurasi virtual host. Virtual host ini bertujuan untuk dapat mengakses file asset www.eden.wise.yyy.com/public/js menjadi www.eden.wise.yyy.com/js
+
+* Kemudian tambahkan konfigurasi untuk alias di **/etc/apache2/sites-available/eden.wise.D14.com.conf**
+
+```
+        Alias "/js" "/var/www/eden.wise.D14.com/public/js" 
+```
+
+* Testing
+
+```
+lynx eden.wise.D14.com/public/js
+```
+
+### Nomor 14
+Loid meminta agar www.strix.operation.wise.yyy.com hanya bisa diakses dengan port 15000 dan port 15500
+
+* Buat konfigurasi untuk membuat virtualhost baru di **/etc/apache2/sites-available** dengan nama strix.operation.wise.D14.com.conf
+
+```
+<VirtualHost *:15000 *:15500>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/strix.operation.wise.D14.com
+        ServerName www.strix.operation.wise.D14.com
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+
+* Kemudian tambahkan kofigurasi untuk listen port ke 15000 dan 15500 di **/etc/apache2/ports.conf** 
+
+```
+Listen 80 // tidak perlu di tambahkan lagi
+Listen 15000
+Listen 15500
+```
+
+## Nomor 15
+dengan autentikasi username Twilight dan password opStrix dan file di /var/www/strix.operation.wise.yyy
+
+* Tambahkan konfigurasi untuk autentikasi di dalam settingan virtualhost pada file **/etc/apache2/sites-available/strix.operation.wise.D14.com.conf**
+
+```
+<Directory /var/www/strix.operation.wise.D14.com>
+        Options +FollowSymLinks -Multiviews
+        AllowOverride All
+        Require all granted
+</Directory>
+```
+* Kemudian masuk ke direktory **/var/www/strix.operation.wise.D14.com**, lalu buat file .htaccess
+
+```
+AuthType Basic
+AuthName "Restricted Content"
+AuthUserFile /var/www/strix.operation.wise.D14.com/.htpasswd
+Require valid-user
+```
+* Lalu buat lagi file .htpasswd, kemudian jalankan perintah berikut, untuk menambahkan konfigurasi username dan password menggunakan htpasswd:
+
+```
+htpasswd -c -b /var/www/strix.operation.wise.D14/.htpasswd Twilight opStrix
+```
+
+### Nomor 16
+dan setiap kali mengakses IP Eden akan dialihkan secara otomatis ke www.wise.yyy.com
+
+* Tambahkan konfigurasi berikut untuk redirect dari IP ke domain wise.D14.com di ** /etc/apache2/sites-available/wise.D14.com.conf**
+
+```
+
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/franky.A16.com
+        ServerName http://192.192.2.3
+
+        Redirect 301 / http://www.wise.D14.com/
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+```
+
+* Testing
+```
+lynx 192.192.2.3
+```
+
+### Nomor 17
+Karena website www.eden.wise.yyy.com semakin banyak pengunjung dan banyak modifikasi sehingga banyak gambar-gambar yang random, maka Loid ingin mengubah request gambar yang memiliki substring “eden” akan diarahkan menuju eden.png. Bantulah Agent Twilight dan Organisasi WISE menjaga perdamaian!
+
 ## Catatan
 - Untuk memudahkan pengerjaan, saya mengubah IP eth0 menjadi static agar IP nya tidak berubah ketika ingin diakses kembali melalui ssh dari host komputer.
+- Untuk mengaktifkan konfigurasi apache yang baru dibuat, gunakan perintah **e2ensite**
+
+```
+a2ensite <site-name>
+```

@@ -141,10 +141,10 @@ EOF
 </VirtualHost>
 EOF
         cat /etc/apache2/sites-available/strix.operation.wise.D14.com.conf
-        a2ensite strix.operation.wise.D14.com
-        service apache2 reload
         echo "Listen 15000
 Listen 15500" >> /etc/apache2/ports.conf
+        a2ensite strix.operation.wise.D14.com
+        service apache2 reload
         echo "Done..."
         fi
         ;;

@@ -6,6 +6,8 @@ Lapres Praktikum Jarkom Modul 2
 |---------------------------|----------|
 |Gloriyano C. Daniel Pepuho |5025201121|
 
+![Topology](topology.png)
+
 ## Cara Pengerjaan
 
 ### Nomor 1

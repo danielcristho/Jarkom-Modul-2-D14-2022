@@ -72,7 +72,7 @@ zone "${DOMAIN_NAME}" {
 };
 zone "${SLAVE_DOMAIN}" {
         type master;
-        file "/etc/bind/berlint/${FORWARD_FILE}";
+        file "/etc/bind/operation/${FORWARD_FILE}";
 };
 EOF
     cat /etc/bind/named.conf.local

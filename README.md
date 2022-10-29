@@ -454,7 +454,7 @@ Require valid-user
 ```
 htpasswd -c -b /var/www/strix.operation.wise.D14/.htpasswd Twilight opStrix
 ```
-
+#### NB: Nomor 15 masih fail ketika testing menggunakan lynx
 ### Nomor 16
 dan setiap kali mengakses IP Eden akan dialihkan secara otomatis ke www.wise.yyy.com
 

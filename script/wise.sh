@@ -66,6 +66,9 @@ case $choice in
 
 zone "${DOMAIN_NAME}" {
         type master;
+        notify yes;
+        allow-transfer { 192.192.2.2; }; //IP Berlint
+        also-notify { 192.192.2.2; }; //IP Berlint
         file "/etc/bind/wise/${FORWARD_FILE}";
 };
 zone "${RESOLV_ADDR}.in-addr.arpa" {

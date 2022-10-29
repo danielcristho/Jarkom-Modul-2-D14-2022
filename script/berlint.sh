@@ -3,7 +3,7 @@
 #CONSTANT
 SERVER_ADDR="192.192.2.3"
 DOMAIN_NAME="wise.D14.com"
-SLAVE_DOMAIN="eden.wise.D14.com"
+SLAVE_DOMAIN="operation.wise.D14.com"
 FORWARD_FILE="forward"
 REVERSE_FILE="reverse"
 RESOLV_ADDR="2.192.192"

@@ -130,7 +130,7 @@ Untuk mempermudah mendapatkan informasi mengenai misi dari Handler, bantulah Loi
 * Pertama konfigurasi forward dan reverse pada **/etc/bind/named.conf.local**
 
 ```
-zone "wise.d14.com" {
+zone "wise.D14.com" {
         type master;
         file "/etc/bind/wise/forward";
 };
@@ -240,7 +240,7 @@ ns1             IN      A       192.192.2.3
 operation       IN      NS      ns1
 ```
 
-* Tambahkan juga konfigurasi pada ***/etc/bind/operation/forward** di Eden
+* Tambahkan juga konfigurasi pada **/etc/bind/operation/forward** di Berlint
 ```
 ;
 ; BIND data file for local loopback interface

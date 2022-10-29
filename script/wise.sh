@@ -101,9 +101,6 @@ eden     IN      A       $SERVER_ADDR
 www.eden IN     CNAME   $DOMAIN_NAME.
 ns1      IN     A       $SERVER_ADDR
 operation IN    NS      ns1
-@        IN      AAAA    ::1
-
-
 EOF
     cat /etc/bind/wise/${FORWARD_FILE}
     echo "Done..."
@@ -118,7 +115,7 @@ EOF
     sed -i "s/localhost/${DOMAIN_NAME}/gI" ${REVERSE_FILE}
     echo "Adding new record..."
     cat >> /etc/bind/${REVERSE_FILE} <<- EOF
-2.in-addr.arpa.       IN        NS         $DOMAIN_NAME.
+3.192.192.in-addr.arpa.       IN        NS         $DOMAIN_NAME.
 2      IN       PTR         $DOMAIN_NAME.
 
 EOF

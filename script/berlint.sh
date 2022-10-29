@@ -70,7 +70,7 @@ zone "${DOMAIN_NAME}" {
         masters { 192.192.3.2; };
         file "/var/lib/bind/${FORWARD_FILE}";
 };
-zone "${SLAVE_DOMAIN}.in-addr.arpa" {
+zone "${SLAVE_DOMAIN}" {
         type master;
         file "/etc/bind/berlint/${FORWARD_FILE}";
 };
@@ -78,8 +78,8 @@ EOF
     cat /etc/bind/named.conf.local
 
     echo "Create new forward and reverse file"
-    cd /etc/bind && mkdir berlint
-    cp db.local berlint/${FORWARD_FILE}
+    cd /etc/bind && mkdir operation
+    cp db.local operation/${FORWARD_FILE}
     #cp db.127 berlint/${REVERSE_FILE}
     echo "Done..."
     fi

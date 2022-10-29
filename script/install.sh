@@ -11,16 +11,15 @@ echo " 3.  Install Bind9                                               ";
 echo " 4.  Install dependencies                                        ";
 echo " 5.  Install Nginx                                               ";
 echo " 6.  Install Apache2                                             ";
-echo " 7.  Install PHP8.0                                              ";
-echo " 8.  Install PHP8.1                                              ";
-echo " 9.  Set up iptables                                             ";
-echo " 10. Setup Apache2 (edit index.html)                             ";
-echo " 11. Restart machine                                             ";
-echo " 12. Set resolv.conf                                             ";
+echo " 7.  Install PHP                                                 ";
+echo " 8.  Set up iptables                                             ";
+echo " 9. Setup Apache2 (edit index.html)                              ";
+echo " 10. Restart machine                                             ";
+echo " 11. Set resolv.conf                                             ";
 echo " 0.  Exit                                                        ";
 echo "=================================================================";
 
-read -p " Enter Your Choice [0 - 12] : " choice;
+read -p " Enter Your Choice [0 - 1] : " choice;
 echo "";
 case $choice in
 
@@ -80,31 +79,18 @@ case $choice in
     ;; 
 
 
-7)  read -p "You want install PHP8.0? y/n : " -n 1 -r
+7)  read -p "You want install PHP? y/n : " -n 1 -r
     echo ""
     if [[ ! $REPLY =~ ^[Nn]$ ]]
-    then 
-    echo "Add PHP Repository"
-    add-apt-repository ppa:ondrej/php
+    then
+    apt install php libapache2-mod-php7.0  -y    
     apt update -y
-    apt-get install php8.0-common php8.0-cli php8.0-mbstring php8.0-xml php8.0-curl php8.0-mysql php8.0-fpm -y
     echo "PHP is ready to use"
     fi
     ;;
 
-8)  read -p "You want install PHP8.1? y/n : " -n 1 -r
-    echo ""
-    if [[ ! $REPLY =~ ^[Nn]$ ]]
-    then 
-    echo "Add PHP Repository"
-    add-apt-repository ppa:ondrej/php
-    apt update -y
-    apt-get install php8.1-common php8.1-cli php8.1-mbstring php8.1-xml php8.1-curl php8.1-mysql php8.1-fpm -y
-    echo "PHP is ready to use"
-    fi
-    ;;
 
-9)  read -p "You want set up iptables? y/n : " -n 1 -r
+8)  read -p "You want set up iptables? y/n : " -n 1 -r
     echo ""
     if [[ ! $REPLY =~ ^[Nn]$ ]]
     then 
@@ -113,7 +99,7 @@ case $choice in
     fi
     ;;
 
-10) read -p "You want set up Apache2? y/n : " -n 1 -r
+9) read -p "You want set up Apache2? y/n : " -n 1 -r
     echo ""
     if [[ ! $REPLY =~ ^[Nn]$ ]]
     then 
@@ -126,7 +112,7 @@ case $choice in
     fi
     ;;
 
-11) read -p "You want restart this machine? y/n :" -n 1 -r
+10) read -p "You want restart this machine? y/n :" -n 1 -r
     echo ""
     if [[ ! $REPLY =~ ^[Nn]$ ]]
     then 
@@ -134,11 +120,13 @@ case $choice in
     fi
     ;;
 
-12) read -p "You want resolv.conf? y/n :" -n 1 -r
+11) read -p "You want resolv.conf? y/n :" -n 1 -r
     echo ""
     if [[ ! $REPLY =~ ^[Nn]$ ]]
     then 
-    echo "nameserver 192.168.122.1" >> /etc/resolv.conf
+    #echo "nameserver 192.168.122.1" >> /etc/resolv.conf
+    echo "namserver 192.192.3.2
+nameserver 192.192.2.2" >> /etc/resolv.conf
     fi
     ;;
 

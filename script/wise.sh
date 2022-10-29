@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #CONSTANT
-SERVER_ADDR="192.192.3.2"
-DOMAIN_NAME="wise.d14.com"
+SERVER_ADDR="192.192.2.3"
+DOMAIN_NAME="wise.D14.com"
 FORWARD_FILE="forward"
 REVERSE_FILE="reverse"
 RESOLV_ADDR="3.192.192"
@@ -95,10 +95,14 @@ EOF
     echo "Replace 127.0.0.1 with server address..."
     sed -i "s/127.0.0.1/${SERVER_ADDR}/gI" ${FORWARD_FILE}
     echo "Adding new record..."
-    cat >> /etc/bind/${FORWARD_FILE} <<- EOF
+    cat >> /etc/bind/wise/${FORWARD_FILE} <<- EOF
 www     IN      CNAME       $SERVER_ADDR
 eden     IN      A       $SERVER_ADDR
 www.eden IN     CNAME   $DOMAIN_NAME.
+ns1      IN     A       $SERVER_ADDR
+operation IN    NS      ns1
+@        IN      AAAA    ::1
+
 
 EOF
     cat /etc/bind/wise/${FORWARD_FILE}
@@ -114,8 +118,8 @@ EOF
     sed -i "s/localhost/${DOMAIN_NAME}/gI" ${REVERSE_FILE}
     echo "Adding new record..."
     cat >> /etc/bind/${REVERSE_FILE} <<- EOF
-2       IN        NS         $DOMAIN_NAME.
-2      IN       PTR         www.$DOMAIN_NAME.
+2.in-addr.arpa.       IN        NS         $DOMAIN_NAME.
+2      IN       PTR         $DOMAIN_NAME.
 
 EOF
     cat /etc/bind/${REVERSE_FILE}

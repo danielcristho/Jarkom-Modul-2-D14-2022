@@ -88,16 +88,16 @@ EOF
 5)  if [ -z "$(ls -A /etc/bind/berlint/${FORWARD_FILE})" ]; then
     echo "File not found!!"
     else
-    cd /etc/bind/berlint
+    cd /etc/bind/operation
     echo "Replace all localhost string with domain name..."
     sed -i "s/localhost/${DOMAIN_NAME}/gI" ${FORWARD_FILE}
     echo "Replace 127.0.0.1 with server address..."
     sed -i "s/127.0.0.1/${SERVER_ADDR}/gI" ${FORWARD_FILE}
     echo "Adding new record..."
-    cat >> /etc/bind/berlint/${FORWARD_FILE} <<- EOF
+    cat >> /etc/bind/operation/${FORWARD_FILE} <<- EOF
 www     IN      A       $SERVER_ADDR
 EOF
-    cat /etc/bind/berlint/${FORWARD_FILE}
+    cat /etc/bind/operation/${FORWARD_FILE}
     service bind9 restart
     echo "Done..."
     fi
@@ -106,16 +106,16 @@ EOF
 6)  if [ -z "$(ls -A /etc/bind/berlint/${REVERSE_FILE})" ]; then
     echo "File not found!!"
     else
-    cd /etc/bind/berlint
+    cd /etc/bind/operation
     echo "Replace all localhost string with domain name..."
     sed -i "s/localhost/${DOMAIN_NAME}/gI" ${REVERSE_FILE}
     echo "Adding new record..."
-    cat >> /etc/bind/berlint/${REVERSE_FILE} <<- EOF
+    cat >> /etc/bind/operation/${REVERSE_FILE} <<- EOF
 3        IN        NS         $DOMAIN_NAME.
 3      IN       PTR         www.$DOMAIN_NAME.
 
 EOF
-    cat /etc/bind/berlint/${REVERSE_FILE}
+    cat /etc/bind/operation/${REVERSE_FILE}
     service bind9 restart
     echo "Configurations is succes..."
     fi

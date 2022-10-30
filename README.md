@@ -484,7 +484,7 @@ lynx 192.192.2.3
 Karena website www.eden.wise.yyy.com semakin banyak pengunjung dan banyak modifikasi sehingga banyak gambar-gambar yang random, maka Loid ingin mengubah request gambar yang memiliki substring “eden” akan diarahkan menuju eden.png. Bantulah Agent Twilight dan Organisasi WISE menjaga perdamaian!
 
 ## Catatan
-- Untuk memudahkan pengerjaan, saya mengubah IP eth0 menjadi static agar IP nya tidak berubah ketika ingin diakses kembali melalui ssh dari host komputer.
+- Untuk memudahkan pengerjaan, saya mengubah IP eth0 di Ostania menjadi static agar IP nya tidak berubah ketika ingin dipoweroff, sehingga bisa diakses kembali melalui ssh dari host komputer.
 - Untuk mengaktifkan konfigurasi apache yang baru dibuat, gunakan perintah **e2ensite**
 
 ```
